@@ -1,0 +1,39 @@
+{% extends 'news_web/base.html' %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/post.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="post">
+            <h2>{{ post.title }}</h2>
+            <h3><a href="{{ post.link }}">{{ post.link }}</a></h3>
+            <p><a href="{{ post.id }}/upvote">{{ post.upvotes.count }}</a></p>
+            <p>by {{ post.author }}</p>
+            <p>{{ post.creation_date }}</p>
+            <hr>
+        </div>
+
+        <form action="{{ post.id }}" method="post" class="add-comment">
+            {% csrf_token %}
+
+            Write your comment: <br>
+            {{ form.text }} <br>
+            <input type="submit" value="Comment">
+        </form>
+
+        {% for comment in comments %}
+            <div class="comment">
+                <h3 class="comment-author">{{ comment.author }}</h3>
+                <h6>{{ comment.creation_date }}</h6>
+                <p>{{ comment.text }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

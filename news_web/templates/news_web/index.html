@@ -1,0 +1,55 @@
+{% extends 'news_web/base.html' %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <header class="header">
+        <div class="logo">NEWS</div>
+
+        <span class="create-post"><a href="{% url 'create' %}">create post</a></span>
+
+        <div class="user-info">
+            <span class="username">Welcome, {{ user }}</span>
+            <a href="{% url 'login' %}">login</a>
+        </div>
+    </header>
+    <main class="main">
+
+    {#  Rendering posts list  #}
+    {% if posts %}
+        {% for post in posts %}
+        <div class="post">
+
+            {#   Actions with upvotes and comments   #}
+            <div class="actions">
+                <div>
+                    <a href="{{ post.id }}/upvote">upvote</a>
+                    <span class="counter">{{ post.upvotes.count }}</span>
+                </div>
+                <div>
+                    <a href="{{ post.id }}">comments</a>
+                    <span class="counter">{{ post.comments.count }}</span>
+                </div>
+            </div>
+
+            <div class="post-info">
+                <h2>{{ post.title }}</h2>
+                by <i>{{ post.author }}</i> at <b>{{ post.creation_date }}</b>
+            </div>
+
+            <div class="source">
+                <a href="{{ post.link }}">
+                    {{ post.link }}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <h2>No posts yet...</h2>
+    {% endif %}
+    </main>
+{% endblock %}
